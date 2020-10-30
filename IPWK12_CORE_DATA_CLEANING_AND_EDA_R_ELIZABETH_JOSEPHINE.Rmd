@@ -2,7 +2,7 @@
 title: "IPWK12-CORE"
 author: "Elizabeth Josephine"
 date: "10/28/2020"
-output: github_document
+output: rmarkdown::github_document
 ---
 # EXPLORATORY DATA ANALYSIS
 ## DATA CHECKING

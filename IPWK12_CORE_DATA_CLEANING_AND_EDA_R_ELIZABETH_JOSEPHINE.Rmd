@@ -4,9 +4,9 @@ author: "Elizabeth Josephine"
 date: "10/28/2020"
 output: github_document
 ---
-
-# DATA CHECKING
-```R
+# EXPLORATORY DATA ANALYSIS
+## DATA CHECKING
+```{R}
 # loading libraries
 library(relaimpo)
 library(ggplot2) # Data visualization
@@ -14,127 +14,118 @@ library(ggthemes) # Plot themes
 library(plotly) # Interactive data visualizations
 library(dplyr) # Data manipulation
 library(psych) # Will be used for correlation visualization
-library(corrplot) # Correlation visualizations
-library(corrr) # Correlation visualizations
 
 ```
 
-```R
-# impoorting our data
+```{R}
+# importing our data
 # reading our data
 df <- fread('http://bit.ly/IPAdvertisingData')
-
 ```
 
-```R
+```{R}
 # previewing the dataset
 View(df)
 
 ```
 
-```R
+```{R}
 # previewing the column names
 colnames(df)
 
 ```
 
-```R
+```{R}
 # previewing the dataset
 class(df)
 
 ```
 
-```R
+```{R}
 # previewing the head of the dataset
 head(df, n = 5)
 
 ```
 
-```R
+```{R}
 # previewing the tail of the dataset
 tail(df, n = 5)
 
 ```
 
-```R
+```{R}
 # checking the structure of the data
 str(df)
 
 ```
 
-```R
+```{R}
 # checking the dimension/shape of the data
 dim(df)
 
+# 1000 rows and 10 columns
+```
+```{r}
+# selecting needed columns and dropping the unneedded columns
+df <- subset(df, select = c("Daily Time Spent on Site", "Age", "Daily Internet Usage", "Male", "Country", "Clicked on Ad"))
+
+colnames(df)
 ```
 
-# DATA CLEANING
-## Missing Values
-```R
+## DATA CLEANING
+### Missing Values
+``` {r}
 # checking for missing values
 sum(is.na(df))
 
+# there are no missing values in the data
 ```
 
-```R
+``` {r}
 # displaying all rows from the dataset which don't contain any missing values 
 na.omit(df)
-
 ```
-## Duplicates
-```R
+
+### Duplicates
+
+``` {r}
 # checking for duplicates
 duplicated_rows <- df[duplicated(df),]
+duplicated_rows
+
+# there are no duplicates in the data
 ```
 
-```R
-# dealing with duplicates
-sum(is.na(df))
-
-```
-
-```R
-# Removing these duplicated rows in the dataset or 
+``` {r}
 # showing these unique items and assigning to a variable unique_items below
 # ---
 #
 unique_items <- df[!duplicated(df), ]
-
-# What about seeing what these unique items are?
-# ---
-#
 unique_items
 ```
 
-## Anomalies
-```R
-# checking for anomalies
+### Checking for outliers
 
+``` {r}
+# visualizing any existing outliers using a boxplot
+df1 <- subset(df, select = c("Daily Time Spent on Site", "Age", "Daily Internet Usage", "Male", "Clicked on Ad"))
+
+boxplot(df1)
+
+# there are no outliers in the data
 ```
 
-## Checking for outliers
-
-```R
-# visualising any existing outliers using a boxplot
-boxplot(df)
-
-```
-
-```R
-# listing the outliers in the vectors
-boxplot.stats(df)$out
-
-```
-
-
-# EXPLORATORY DATA ANALYSIS
+# BIVARIATE AND UNIVARIATE ANALYSIS
 ## Univariate Analysis
 ### Measures of Central Tendency
-```R
-# Finding the mean
-df.dist.mean <- mean(df$dist)
 
+``` {r}
+# descriptive statistics
+summary(df1)
 ```
+
+
+
 
 ```R
 # Finding the mode

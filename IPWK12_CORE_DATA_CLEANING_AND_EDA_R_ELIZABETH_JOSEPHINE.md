@@ -3,6 +3,38 @@ IPWK12-CORE
 Elizabeth Josephine
 10/28/2020
 
+# DEFINING THE QUESTION
+
+## **a) Specifying the Question**
+
+Determining which individuals are most likely to click on the ads of the
+Kenyan entrepreneur
+
+## **b) Defining the metrics for success**
+
+Bivariates and univariate Exploratory data analysis
+
+## **c) Understanding the context**
+
+Determination of the audience the entrepreneur can target
+
+## **d) Recording the Experimental Design**
+
+1.  Define the question, the metric for success, the context,
+    experimental design taken.
+2.  Read and explore the given dataset.
+3.  Find and deal with outliers, anomalies, and missing data within the
+    dataset.
+4.  Perform univariate and bivariate analysis.
+5.  From your insights provide a conclusion and recommendation.
+
+## **e) Relevance of the data**
+
+The data used for this project is necessary for determining which
+audience should be targeted
+
+\[<http://bit.ly/IPAdvertisingData>\].
+
 # EXPLORATORY DATA ANALYSIS
 
 ## DATA CHECKING
@@ -245,19 +277,14 @@ str(df)
 
 ``` r
 # checking the dimension/shape of the data
-dim(df)
+dim(df) # 1000 rows and 10 columns
 ```
 
     ## [1] 1000   10
 
 ``` r
-# 1000 rows and 10 columns
-```
-
-``` r
 # selecting needed columns
 df <- subset(df, select = c("Daily Time Spent on Site", "Age", "Daily Internet Usage", "Male", "Country", "Clicked on Ad"))
-
 colnames(df)
 ```
 
@@ -271,14 +298,10 @@ colnames(df)
 
 ``` r
 # checking for missing values
-sum(is.na(df))
+sum(is.na(df))# there are no missing values in the data
 ```
 
     ## [1] 0
-
-``` r
-# there are no missing values in the data
-```
 
 ``` r
 # displaying all rows from the dataset which don't contain any missing values 
@@ -315,19 +338,13 @@ na.omit(df)
 ``` r
 # checking for duplicates
 duplicated_rows <- df[duplicated(df),]
-duplicated_rows
+duplicated_rows # there are no duplicates in the data
 ```
 
     ## Empty data.table (0 rows and 6 cols): Daily Time Spent on Site,Age,Daily Internet Usage,Male,Country,Clicked on Ad
 
 ``` r
-# there are no duplicates in the data
-```
-
-``` r
 # showing these unique items and assigning to a variable unique_items below
-# ---
-#
 unique_items <- df[!duplicated(df), ]
 unique_items
 ```
@@ -363,14 +380,41 @@ unique_items
 # visualizing any existing outliers using a boxplot
 df1 <- subset(df, select = c("Daily Time Spent on Site", "Age", "Daily Internet Usage", "Male", "Clicked on Ad"))
 
-boxplot(df1)
+boxplot(df1)# there are no outliers in the data
 ```
 
 ![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ``` r
-# there are no outliers in the data
+# renaming columns for easy analysis
+df1 <- df1 %>% rename(Daily_Time_Spent_on_Site = "Daily Time Spent on Site")
+df1 <- df1 %>% rename(Daily_Internet_Usage = "Daily Internet Usage")
+df1 <- df1 %>% rename(Clicked_on_Ad = "Clicked on Ad")
+
+    
+df1
 ```
+
+    ##       Daily_Time_Spent_on_Site Age Daily_Internet_Usage Male Clicked_on_Ad
+    ##    1:                    68.95  35               256.09    0             0
+    ##    2:                    80.23  31               193.77    1             0
+    ##    3:                    69.47  26               236.50    0             0
+    ##    4:                    74.15  29               245.89    1             0
+    ##    5:                    68.37  35               225.58    0             0
+    ##   ---                                                                     
+    ##  996:                    72.97  30               208.58    1             1
+    ##  997:                    51.30  45               134.42    1             1
+    ##  998:                    51.63  51               120.37    1             1
+    ##  999:                    55.55  19               187.95    0             0
+    ## 1000:                    45.01  26               178.35    0             1
+
+``` r
+colnames(df1)
+```
+
+    ## [1] "Daily_Time_Spent_on_Site" "Age"                     
+    ## [3] "Daily_Internet_Usage"     "Male"                    
+    ## [5] "Clicked_on_Ad"
 
 # BIVARIATE AND UNIVARIATE ANALYSIS
 
@@ -380,17 +424,18 @@ boxplot(df1)
 
 ``` r
 # descriptive statistics
+# these summaries will provide us with the measures of central tendencies of the numerical columns
 summary(df1)
 ```
 
-    ##  Daily Time Spent on Site      Age        Daily Internet Usage      Male      
+    ##  Daily_Time_Spent_on_Site      Age        Daily_Internet_Usage      Male      
     ##  Min.   :32.60            Min.   :19.00   Min.   :104.8        Min.   :0.000  
     ##  1st Qu.:51.36            1st Qu.:29.00   1st Qu.:138.8        1st Qu.:0.000  
     ##  Median :68.22            Median :35.00   Median :183.1        Median :0.000  
     ##  Mean   :65.00            Mean   :36.01   Mean   :180.0        Mean   :0.481  
     ##  3rd Qu.:78.55            3rd Qu.:42.00   3rd Qu.:218.8        3rd Qu.:1.000  
     ##  Max.   :91.43            Max.   :61.00   Max.   :270.0        Max.   :1.000  
-    ##  Clicked on Ad
+    ##  Clicked_on_Ad
     ##  Min.   :0.0  
     ##  1st Qu.:0.0  
     ##  Median :0.5  
@@ -399,93 +444,273 @@ summary(df1)
     ##  Max.   :1.0
 
 ``` r
-# Finding the mode
+# Finding the mode of age
 getmode <- function(v) {
    uniqv <- unique(v)
    uniqv[which.max(tabulate(match(v, uniqv)))]
 }
 
-df.dist.mode <- getmode(df$dist)
+df1.Age.mode <- getmode(df$Age)
+df1.Age.mode
 ```
 
+    ## [1] 31
+
 ``` r
-# Finding the median
-df.dist.median <- median(df$dist)
+# Finding the median of age
+df1.Age.median <- median(df$Age)
+df1.Age.median 
 ```
+
+    ## [1] 35
 
 ### Measures of Dispersion
 
 ``` r
-# Finding the minimum code
-df.dist.min <- min(df$dist)
+# Since we cannot find the measures of dispersion for all the six
+# columns at a go, i will work with age and daily internet usage
 ```
+
+``` r
+colnames(df1) 
+```
+
+    ## [1] "Daily_Time_Spent_on_Site" "Age"                     
+    ## [3] "Daily_Internet_Usage"     "Male"                    
+    ## [5] "Clicked_on_Ad"
+
+``` r
+# Finding the minimum code
+df1.Daily_Internet_Usage.min <- min(df1$Daily_Internet_Usage)
+df1.Daily_Internet_Usage.min
+```
+
+    ## [1] 104.78
+
+``` r
+# Finding the minimum code
+df1.Age.min <- min(df1$Age)
+df1.Age.min
+```
+
+    ## [1] 19
 
 ``` r
 # Finding the maximum code
-athletes.dist.max <- max(hills$dist)
+df1.Daily_Internet_Usage.max <- max(df1$Daily_Internet_Usage)
+df1.Daily_Internet_Usage.max
 ```
 
-``` r
-# finding the range code
-athletes.dist.range <- range(hills$dist)
-```
+    ## [1] 269.96
 
 ``` r
-# finding the quantile code
-athletes.dist.quantile <- quantile(hills$dist)
+# Finding the maximum code
+df1.Age.max <- max(df1$Age)
+df1.Age.max
 ```
 
-``` r
-# finding the variance code
-athletes.dist.variance <- var(hills$dist)
-```
+    ## [1] 61
 
 ``` r
-# finding the standard deviation code
-athletes.dist.sd <- sd(hills$dist)
+# Finding the range code
+df1.Daily_Internet_Usage.range <- range(df1$Daily_Internet_Usage)
+df1.Daily_Internet_Usage.range
 ```
+
+    ## [1] 104.78 269.96
+
+``` r
+# Finding the range code
+df1.Age.range <- range(df1$Age)
+df1.Age.range
+```
+
+    ## [1] 19 61
+
+``` r
+# Finding the quantile code
+df1.Daily_Internet_Usage.quantile <- quantile(df1$Daily_Internet_Usage)
+df1.Daily_Internet_Usage.quantile
+```
+
+    ##       0%      25%      50%      75%     100% 
+    ## 104.7800 138.8300 183.1300 218.7925 269.9600
+
+``` r
+# Finding the quantile code
+df1.Age.quantile <- quantile(df1$Age)
+df1.Age.quantile
+```
+
+    ##   0%  25%  50%  75% 100% 
+    ##   19   29   35   42   61
+
+``` r
+# Finding the variance code
+df1.Daily_Internet_Usage.variance <- var(df1$Daily_Internet_Usage)
+df1.Daily_Internet_Usage.variance
+```
+
+    ## [1] 1927.415
+
+``` r
+# Finding the variance code
+df1.Age.variance <- var(df1$Age)
+df1.Age.variance
+```
+
+    ## [1] 77.18611
+
+``` r
+# Finding the standard deviation code
+df1.Daily_Internet_Usage.sd <- sd(df1$Daily_Internet_Usage)
+df1.Daily_Internet_Usage.sd
+```
+
+    ## [1] 43.90234
+
+``` r
+# Finding the standard deviation code
+df1.Age.sd <- sd(df1$Age)
+df1.Age.sd
+```
+
+    ## [1] 8.785562
 
 ### Univariate Graphical
 
 ``` r
-# creating a boxplot graph
-boxplot(hills$dist)
+# creating a boxplot graph for the variable all the numerical variables
+boxplot(df1)
 ```
+
+![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 ``` r
 # fetching the columns
-school <- painters$School
+Daily_Internet_Usage <- df1$Daily_Internet_Usage
 
 # fetching the frequency distribution
-school_frequency <- table(school)
+Daily_Internet_Usage_frequency <- table(Daily_Internet_Usage)
 
 # plotting the bargraph
-barplot(school_frequency)
+barplot(Daily_Internet_Usage)
 ```
 
+![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
+
 ``` r
-# creating a histogram
-hist(faithful$eruptions)
+# fetching the columns
+Age <- df1$Age
+
+# fetching the frequency distribution
+Age_frequency <- table(Age)
+
+# plotting the bargraph
+barplot(Age)
 ```
+
+![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
+
+``` r
+# creating a boxplot graph for the variable all the numerical variables
+colnames(df1)
+```
+
+    ## [1] "Daily_Time_Spent_on_Site" "Age"                     
+    ## [3] "Daily_Internet_Usage"     "Male"                    
+    ## [5] "Clicked_on_Ad"
+
+``` r
+# fetching the columns
+hist(df1$Daily_Internet_Usage)
+```
+
+![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
+
+``` r
+# fetching the columns
+hist(df1$Age)
+```
+
+![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 ## Bivariate analysis
 
 ``` r
 # assigning columns to variables
-waiting<- faithful$waiting
+Age<- df1$Age
 
 # finding the covariance
-cov(eruptions, waiting)
+cov(Daily_Internet_Usage, Age)
 ```
+
+    ## [1] -141.6348
 
 ``` r
 # finding the correlation
-cor(eruptions, waiting)
+cor(Age, Daily_Internet_Usage) # negative correlation coefficient
 ```
+
+    ## [1] -0.3672086
 
 ### Graphical Techniques
 
 ``` r
+# finding the correlation matrix
+library(corrplot)
+```
+
+    ## corrplot 0.84 loaded
+
+``` r
+#rquery.cormat(df1, type="full")
+res <- cor(df1)
+round(res, 2)
+```
+
+    ##                          Daily_Time_Spent_on_Site   Age Daily_Internet_Usage
+    ## Daily_Time_Spent_on_Site                     1.00 -0.33                 0.52
+    ## Age                                         -0.33  1.00                -0.37
+    ## Daily_Internet_Usage                         0.52 -0.37                 1.00
+    ## Male                                        -0.02 -0.02                 0.03
+    ## Clicked_on_Ad                               -0.75  0.49                -0.79
+    ##                           Male Clicked_on_Ad
+    ## Daily_Time_Spent_on_Site -0.02         -0.75
+    ## Age                      -0.02          0.49
+    ## Daily_Internet_Usage      0.03         -0.79
+    ## Male                      1.00         -0.04
+    ## Clicked_on_Ad            -0.04          1.00
+
+``` r
 # creating a scatterplot
-plot(eruptions, waiting, xlab="Eruption duration", ylab="Time waited")
+plot(Age, Daily_Internet_Usage, xlab="Age", ylab="Daily_Internet_Usage")
+```
+
+![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+
+``` r
+# creating a scatterplot
+plot(Age, Daily_Internet_Usage, xlab="Age", ylab="DDaily_Time_Spent_on_Site")
+```
+
+![](IPWK12_CORE_DATA_CLEANING_AND_EDA_R_ELIZABETH_JOSEPHINE_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+\# CONCLUSIONS AND RECOMMENDATIONS \#\# Conclusions
+
+``` r
+# From the analysis above, we can conclude that:
+# the people that clicked on the ads on the blog were aged between 19 yrs and 61 years old.
+# their internet usage ranged between 104.8 to 270 units with the time spent on her blog ranging between 32 to 91 minutes.
+# there were no outliers in the data which made it easier for analysis
+# the graphs in the analysis were used to visualize the most important factors that influenced how the individuals that visited her site interacted with the posts and ads.
+# there was a negative correlation between the age and the daily internet usage of the individuals.
+# notably, the audiences were mostly middle aged and the young which explained the clicks on the site.
+# it was also realized that the higher the age, the lower the time that was spent on the site.
+```
+
+## Recommendations
+
+``` r
+# From the analysis, i would recommend that the ads that are to be placed on the blog be relevant to the ages. Because only then will individuals click the ads.
+# this is to say that they can minimize ads that relate to older individuals and maximize on the ads that the young and middle adolescents can relate with. 
 ```

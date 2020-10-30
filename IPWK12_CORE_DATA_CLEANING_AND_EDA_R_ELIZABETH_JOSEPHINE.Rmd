@@ -1,0 +1,242 @@
+---
+title: "IPWK12-CORE"
+author: "Elizabeth Josephine"
+date: "10/28/2020"
+output: github_document
+---
+
+# DATA CHECKING
+```R
+# loading libraries
+library(relaimpo)
+library(ggplot2) # Data visualization
+library(ggthemes) # Plot themes
+library(plotly) # Interactive data visualizations
+library(dplyr) # Data manipulation
+library(psych) # Will be used for correlation visualization
+library(corrplot) # Correlation visualizations
+library(corrr) # Correlation visualizations
+
+```
+
+```R
+# impoorting our data
+# reading our data
+df <- fread('http://bit.ly/IPAdvertisingData')
+
+```
+
+```R
+# previewing the dataset
+View(df)
+
+```
+
+```R
+# previewing the column names
+colnames(df)
+
+```
+
+```R
+# previewing the dataset
+class(df)
+
+```
+
+```R
+# previewing the head of the dataset
+head(df, n = 5)
+
+```
+
+```R
+# previewing the tail of the dataset
+tail(df, n = 5)
+
+```
+
+```R
+# checking the structure of the data
+str(df)
+
+```
+
+```R
+# checking the dimension/shape of the data
+dim(df)
+
+```
+
+# DATA CLEANING
+## Missing Values
+```R
+# checking for missing values
+sum(is.na(df))
+
+```
+
+```R
+# displaying all rows from the dataset which don't contain any missing values 
+na.omit(df)
+
+```
+## Duplicates
+```R
+# checking for duplicates
+duplicated_rows <- df[duplicated(df),]
+```
+
+```R
+# dealing with duplicates
+sum(is.na(df))
+
+```
+
+```R
+# Removing these duplicated rows in the dataset or 
+# showing these unique items and assigning to a variable unique_items below
+# ---
+#
+unique_items <- df[!duplicated(df), ]
+
+# What about seeing what these unique items are?
+# ---
+#
+unique_items
+```
+
+## Anomalies
+```R
+# checking for anomalies
+
+```
+
+## Checking for outliers
+
+```R
+# visualising any existing outliers using a boxplot
+boxplot(df)
+
+```
+
+```R
+# listing the outliers in the vectors
+boxplot.stats(df)$out
+
+```
+
+
+# EXPLORATORY DATA ANALYSIS
+## Univariate Analysis
+### Measures of Central Tendency
+```R
+# Finding the mean
+df.dist.mean <- mean(df$dist)
+
+```
+
+```R
+# Finding the mode
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+df.dist.mode <- getmode(df$dist)
+
+```
+
+```R
+# Finding the median
+df.dist.median <- median(df$dist)
+
+```
+### Measures of Dispersion
+
+```R
+# Finding the minimum code
+df.dist.min <- min(df$dist)
+
+```
+
+```R
+# Finding the maximum code
+athletes.dist.max <- max(hills$dist)
+
+```
+
+```R
+# finding the range code
+athletes.dist.range <- range(hills$dist)
+
+```
+
+```R
+# finding the quantile code
+athletes.dist.quantile <- quantile(hills$dist)
+
+```
+
+```R
+# finding the variance code
+athletes.dist.variance <- var(hills$dist)
+
+```
+
+```R
+# finding the standard deviation code
+athletes.dist.sd <- sd(hills$dist)
+
+```
+
+### Univariate Graphical
+
+```R
+# creating a boxplot graph
+boxplot(hills$dist)
+
+```
+
+```R
+# fetching the columns
+school <- painters$School
+
+# fetching the frequency distribution
+school_frequency <- table(school)
+
+# plotting the bargraph
+barplot(school_frequency)
+
+```
+
+```R
+# creating a histogram
+hist(faithful$eruptions)
+
+```
+
+
+## Bivariate analysis
+```R
+# assigning columns to variables
+waiting<- faithful$waiting
+
+# finding the covariance
+cov(eruptions, waiting)
+
+```
+
+```R
+# finding the correlation
+cor(eruptions, waiting)
+
+```
+
+### Graphical Techniques
+
+```R
+# creating a scatterplot
+plot(eruptions, waiting, xlab="Eruption duration", ylab="Time waited")
+
+```

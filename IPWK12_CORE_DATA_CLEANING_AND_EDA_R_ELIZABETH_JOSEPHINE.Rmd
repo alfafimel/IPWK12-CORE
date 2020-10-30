@@ -2,7 +2,8 @@
 title: "IPWK12-CORE"
 author: "Elizabeth Josephine"
 date: "10/28/2020"
-output: rmarkdown::github_document
+output: html_document:
+    keep_md: true
 ---
 # EXPLORATORY DATA ANALYSIS
 ## DATA CHECKING
@@ -20,7 +21,8 @@ library(psych) # Will be used for correlation visualization
 ```{R}
 # importing our data
 # reading our data
-df <- fread('http://bit.ly/IPAdvertisingData')
+df <- read.csv('http://bit.ly/IPAdvertisingData')
+df
 ```
 
 ```{R}
@@ -66,7 +68,7 @@ dim(df)
 # 1000 rows and 10 columns
 ```
 ```{r}
-# selecting needed columns and dropping the unneedded columns
+# selecting needed columns
 df <- subset(df, select = c("Daily Time Spent on Site", "Age", "Daily Internet Usage", "Male", "Country", "Clicked on Ad"))
 
 colnames(df)
